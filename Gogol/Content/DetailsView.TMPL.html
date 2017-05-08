@@ -1,0 +1,39 @@
+﻿<md-dialog aria-label="Mango (Fruit)">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{tile.name}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content" flex>
+                <div layout="row">
+                    <img ng-repeat="photo in tile.photos" src="data:image/png;base64,{{photo}}" style="height: 350px;" flex />
+                </div>
+                <p style="width: 100%">{{tile.description}}</p>
+                <p style="width: 100%">ISBN: {{tile.ISBN}}</p>
+                <p style="width: 100%">Aвтор: {{tile.author}}</p>
+                <p style="width: 100%">Иллюстратор: {{tile.illustrator}}</p>
+                <p style="width: 100%">Издательство: {{tile.publisher}}</p>
+                <p style="width: 100%">Серия: {{tile.series}}</p>
+                <p style="width: 100%">Язык: {{tile.language}}</p>
+                <p style="width: 100%">Габариты: {{tile.size}} мм.</p>
+                <p style="width: 100%">Вес: {{tile.weight}} гр.</p>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <div>{{tile.price | currency}}</div>
+            <span flex></span>
+            <md-button ng-click="answer('not useful')">
+                CLOSE
+            </md-button>
+            <md-button ng-click="addThisToCart($event, tile)">
+                CART
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

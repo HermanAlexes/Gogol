@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e92c8e623f3343a4a4ab3d5f0a5dbad1" Name="Diagram1">
+        <EntityTypeShape EntityType="GogolStoreModel.C__RefactorLog" Width="1.5" PointX="5.75" PointY="7.25" />
+        <EntityTypeShape EntityType="GogolStoreModel.Author" Width="1.5" PointX="0.75" PointY="4" />
+        <EntityTypeShape EntityType="GogolStoreModel.Book" Width="1.5" PointX="3" PointY="2.625" />
+        <EntityTypeShape EntityType="GogolStoreModel.BooksPhoto" Width="1.5" PointX="5.25" PointY="3.875" />
+        <EntityTypeShape EntityType="GogolStoreModel.Category" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="GogolStoreModel.Publisher" Width="1.5" PointX="0.75" PointY="7.125" />
+        <AssociationConnector Association="GogolStoreModel.author_id" />
+        <AssociationConnector Association="GogolStoreModel.book_id" />
+        <AssociationConnector Association="GogolStoreModel.category_id" />
+        <AssociationConnector Association="GogolStoreModel.publish_id" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

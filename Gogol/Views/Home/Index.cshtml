@@ -1,0 +1,206 @@
+﻿
+@model Gogol.Models.BooksListViewModel
+
+
+@{
+    ViewBag.Title = "Gogol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--
+# Collapsable Header with search
+-->
+<!-- Navigation -->
+<!-- Intro Header -->
+<!-- Navigation -->
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div class="container" ng-controller="CartController as ctrl" flex>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                Menu <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand page-scroll" href="#page-top">
+                <i class="fa fa-play-circle"></i> <span class="light">Book Store</span> Gogol
+            </a>
+        </div>
+        <div class="nav navbar-right" layout-align="end end">
+            <md-button ng-click="openCart()" class="md-primary cart-button">
+                <md-icon md-svg-src="~/Content/ic_shopping_cart_black_24px.svg"></md-icon>
+                <md-content id="odometer" class="odometer"></md-content>
+            </md-button>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<header class="intro" scroll>
+    <div class="intro-body">
+        <div class="container" ng-controller="SearchController as ctrl"
+             ng-app="gogol" layout="column">
+            <div layout-gt-sm="row">
+                <md-autocomplete flex="" md-input-name="autocompleteField"
+                                 md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem"
+                                 md-search-text="ctrl.searchText" md-items="item in ctrl.querySearch(ctrl.searchText)"
+                                 md-item-text="item.display" md-require-match="" md-floating-label="Gogol Search" class="gogol-search">
+                    <md-item-template>
+                        <span md-highlight-text="ctrl.searchText">{{item.display}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        We are sorry. No books found
+                    </md-not-found>
+                    <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
+                        <div ng-message="required">
+                            You <b>must</b> have a favorite state.
+                        </div>
+                        <div ng-message="md-require-match">Please select an existing state.</div>
+                    </div>
+                </md-autocomplete>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!--Cart List-->
+<!--Gallery + Filter-->
+<div layout="row" flex>
+    <div ng-controller="FilterController as filter" flex="15"
+         ng-cloak="" ng-app="gogol">
+        <md-sidenav class="md-sidenav-left gogol-sidenav" md-component-id="left"
+                    md-is-locked-open="$mdMedia('gt-md')" md-whiteframe="4">
+            <md-toolbar class="md-t">
+                <h1 class="md-toolbar-tools">CATEGORIES</h1>
+            </md-toolbar>
+            <div class="filter-checkbox" class="demo-select-all-checkboxes" flex="100" ng-repeat="item in categories">
+                <md-checkbox ng-model="item.check" ng-checked="exists(item, selected)" ng-click="toggle(item, selected, item.check, 'category')">
+                    <a class="white-text ">{{ item.string }}</a>
+                </md-checkbox>
+            </div>
+            <md-toolbar class="clr-indigo-light">
+                <h3 class="md-toolbar-tools">AUTHORS</h3>
+            </md-toolbar>
+            <div class="filter-checkbox" class="demo-select-all-checkboxes" flex="100" ng-repeat="item in authors">
+                <md-checkbox ng-model="item.check" ng-checked="exists(item, selected)" ng-click="toggle(item, selected, item.check, 'author')">
+                    <a class="white-text ">{{ item.string }}</a>
+                </md-checkbox>
+            </div>
+            <md-toolbar class="clr-indigo-light">
+                <h3 class="md-toolbar-tools">PUBLISHERS</h3>
+            </md-toolbar>
+            <div class="filter-checkbox" class="demo-select-all-checkboxes" flex="100" ng-repeat="item in publishers">
+                <md-checkbox ng-model="item.check" ng-checked="exists(item, selected)" ng-click="toggle(item, selected, item.check, 'publisher')">
+                    <a class="white-text ">{{ item.string }}</a>
+                </md-checkbox>
+            </div>
+            <md-button class="filter-button" ng-click="filter()"><a class="white-text">FILTER</a></md-button>
+        </md-sidenav>
+    </div>
+    <div ng-controller="GalleryController as galleryCtrl" ng-cloak="" flex="85" ng-app="gogol" class="gallery-layout">
+        <md-grid-list md-cols-xs="1" md-cols="2" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="4" md-row-height="310px"
+                      md-gutter="22px" md-gutter-gt-sm="22px" flex>
+            <md-grid-tile ng-repeat="tile in tiles" md-rowspan="{{tile.span.row}}"
+                          md-colspan="{{tile.span.col}}" md-colspan-sm="1" md-colspan-xs="1" ng-class="tile.background">
+                <md-card md-theme="dark-grey" md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-media>
+                            <img ng-src="data:image/png;base64,{{tile.image}}" class="md-card-image" />
+                        </md-card-title-media>
+                    </md-card-title>
+                    <md-card-title-text layout="row" layout-align="center start" style="padding-bottom:10px">
+                        <span class="md-headline">{{tile.name}}</span>
+                    </md-card-title-text>
+                    <md-card-actions layout="row" layout-align="start center">
+                        <md-card-actions>
+                            <md-content>
+                                {{tile.price | currency}}
+                            </md-content>
+                        </md-card-actions>
+                        <md-button md-theme="default" ng-click="showAdvanced($event, tile)">VIEW</md-button>
+                        <md-button md-theme="default" ng-click="addToCart($event, tile)">CART</md-button>
+                    </md-card-actions>
+                </md-card>
+            </md-grid-tile>
+        </md-grid-list>
+    </div>
+</div>
+
+<md-sidenav id="cartSideNav" class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+    <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">CART</h1>
+    </md-toolbar>
+    <md-content ng-controller="CartController as ctrl" layout-padding flex>
+        <form>
+            <md-card ng-repeat="book in books" md-theme-watch>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{book.name}}</span>
+                        <span class="md-subhead">TOTAL: {{book.totalPrice}}</span>
+                    </md-card-title-text>
+                    <md-card-title-media>
+                        <div class="md-media-sm card-media">
+                            <img ng-src="data:image/png;base64,{{book.image}}" />
+                        </div>
+                    </md-card-title-media>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button ng-click="changeQuantity(book.id, -1)">-</md-button>
+                    <md-button ng-click="changeQuantity(book.id, 1)">+</md-button>
+                    <md-button ng-click="removeBook(book.id)">REMOVE</md-button>
+                </md-card-actions>
+            </md-card>
+        </form>
+        <md-button ng-click="close()" class="md-primary">
+            <md-icon md-svg-src="~/Content/ic_shopping_cart_black_24px.svg"></md-icon>
+            CHECKOUT
+        </md-button>
+        <md-button ng-click="close()" class="md-primary">
+            CLOSE
+        </md-button>
+    </md-content>
+</md-sidenav>
+<!--Footer-->
+<div layout="row" flex style="padding-top:10px">
+    <div ng-controller="FooterController as footer" layout="column">
+        <md-content layout-gt-sm="row" layout-padding>
+            <form name="contactForm">
+                <div layout="row">
+                    <md-input-container flex="50">
+                        <label>Your Name</label>
+                        <input required name="firstName" ng-model="contact.name" />
+                        <div ng-messages="contactForm.autocompleteField.$error">
+                            <div ng-message="required">Sorry, This is required.</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex="50">
+                        <label>Email</label>
+                        <input required name="email" ng-model="contact.email" />
+                        <div ng-messages="contactForm.email.$error">
+                            <div ng-message="required">Sorry, This is required.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container class="md-block">
+                        <label>Your Message</label>
+                        <textarea name="message" ng-model="contact.message"
+                                  required md-maxlength="1000" rows="4" md-select-on-focus>
+                            </textarea>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-button type="submit">Send</md-button>
+                </div>
+            </form>
+        </md-content>
+    </div>
+</div>
+
+
+
+
+
+<!--
+left-align navbar with filter sections and apply button
+-->
+<!--
+ right-align scrolable grid with elements
+-->

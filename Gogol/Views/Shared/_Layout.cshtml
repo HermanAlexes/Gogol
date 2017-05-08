@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Gogol</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body ng-app="gogol" ng-cloak>
+    @RenderBody()
+    
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/controllers")
+    @Scripts.Render("http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
